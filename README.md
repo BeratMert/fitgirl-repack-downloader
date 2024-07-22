@@ -8,13 +8,16 @@ Features
 
 
 Usage
-Clone the repository:
+-----
+* Clone the repository:
 
-git clone <repository-url>
-cd <repository-directory>
+* git clone <repository-url>
+* cd <repository-directory>
 
-- Install dependencies:
+Install dependencies
+---------------------
 pip install -r requirements.txt
 
-- Run the script:
+Run the script:
+---------------
 python fitgirl_scraper.py
