@@ -9,23 +9,28 @@ class FitGirlRepacksScraper:
         self.downloadLinks = []
     
     def checkLink(self):
-        if "https://fitgirl-repacks.site/" in self.link:
+        if "https://fitgirl-repacks.site/" not in self.link:
+            print("Invalid link format. Example format: https://fitgirl-repacks.site/marvels-spider-man-remastered/")
+            return
 
-            self.getLinks()
-
-        else:
-            print("You need to paste a link like this -> https://fitgirl-repacks.site/marvels-spider-man-remastered/")
+        self.getLinks()
 
     def getLinks(self):
         try:
             website = get(self.link)
 
+            if website.status_code != 200:
+                print(f"Failed to retrieve content from {self.link}. Status code: {website.status_code}")
+                return
+
             soup = BeautifulSoup(website.content, 'html.parser')
 
-            table = soup.find_all('div', attrs = {'su-spoiler-content su-u-clearfix su-u-trim'})
+            table = soup.find_all('div', class_='su-spoiler-content su-u-clearfix su-u-trim')
 
-            for row in table[1].find_all("a", href=True):
-                self.downloadLinks.append(row["href"])
+            for row in table:
+                links = table[1].find_all("a", href=True)
+                for link in links:
+                    self.downloadLinks.append(link["href"])
             
             self.startDownload()
 
@@ -45,29 +50,36 @@ class FitGirlRepacksScraper:
             try:
 
                 website = get(dLink)
+
+                if website.status_code != 200:
+                    print(f"Failed to download from {dLink}. Status code: {website.status_code}")
+                    continue
+
                 soup = BeautifulSoup(website.content, 'html.parser')
+                scripts = soup.find_all("script")
 
                 # Find and process JavaScript code in <script> tags
-                for script in soup.find_all("script"): 
+                for script in scripts: 
                     js_code = script.get_text()
                     
                     #Check if a specific URL is present in the JavaScript code
                     if "https://fuckingfast.co/" in js_code:
-                        test = js_code.split('https://fuckingfast.co/')
-                        test = test[1].split('")')
+                        start_index = js_code.find("https://fuckingfast.co/")
+                        end_index = js_code.find('")', start_index)
 
-                        downlink = "https://fuckingfast.co/" + test[0]
+                        if start_index != -1 and end_index != -1:
+                            downlink = js_code[start_index:end_index]
 
-                        dLink = dLink.split("#")
-                        dLink = dLink[1]
+                            dLink = dLink.split("#")
+                            dLink = dLink[1]
 
-                        opener.retrieve(downlink, dLink)
+                            opener.retrieve(downlink, dLink)
 
-                        print("Downloaded: ", dLink)
+                            print("Downloaded: ", dLink)
 
             except Exception as e:
                 print(f"Error downloading : {e}")
-                return
+                continue
 
 
 if __name__ == "__main__":
