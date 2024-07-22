@@ -83,7 +83,8 @@ class FitGirlRepacksScraper:
 
 
 if __name__ == "__main__":
-    # link = "https://fitgirl-repacks.site/marvels-spider-man-remastered/"
-    link = str(input("Paste link: "))
+    testLink = "https://fitgirl-repacks.site/marvels-spider-man-remastered/"
+    print("Print game link what you download like this -> ", testLink)
+    link = str(input("Paste Game Link: "))
     scraper = FitGirlRepacksScraper(link)
     scraper.checkLink()
