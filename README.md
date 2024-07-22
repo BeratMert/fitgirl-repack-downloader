@@ -9,8 +9,7 @@ A Python script to scrape download links from FitGirl Repacks website and downlo
 
 ## Usage
 * Clone the repository:
-
-* git clone https://github.com/BeratMert/fitgirl-repack-downloader.git
+> git clone https://github.com/BeratMert/fitgirl-repack-downloader.git
 * cd C:\Users\USER\Desktop\testgamefolder
 
 Install dependencies
