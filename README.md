@@ -19,3 +19,5 @@ Install dependencies
 Run the script:
 ---------------
 * python fitgirl_scraper.py
+
+https://github.com/user-attachments/assets/6ffda094-1ac4-4c68-b53d-67b88431dd22
