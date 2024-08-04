@@ -1,6 +1,7 @@
 from urllib.request import URLopener
 from requests import get
 from bs4 import BeautifulSoup
+from pathlib import Path
 
 class FitGirlRepacksScraper:
     def __init__(self, link):
@@ -71,11 +72,17 @@ class FitGirlRepacksScraper:
                             downlink = js_code[start_index:end_index]
 
                             dLink = dLink.split("#")
-                            dLink = dLink[1]
+                            if len(dLink) > 1:
+                                dLink = dLink[1]
 
-                            opener.retrieve(downlink, dLink)
+                                p = Path(dLink)
+                                if p.exists():
+                                    print("All files are downloaded!")
+                                    exit()
+                                else:
+                                    opener.retrieve(downlink, dLink)
 
-                            print("Downloaded: ", dLink)
+                                print("Downloaded: ", dLink)
 
             except Exception as e:
                 print(f"Error downloading : {e}")
